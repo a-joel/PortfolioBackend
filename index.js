@@ -6,7 +6,14 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    process.env.BASE_URL
+  ],
+  methods: ["POST"],
+}));
+
 app.use(express.json());
 
 app.post("/send-message", async (req, res) => {
@@ -79,7 +86,7 @@ app.post("/send-message", async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, error: error });
   }
 });
 
